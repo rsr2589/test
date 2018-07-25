@@ -23,5 +23,10 @@ pipeline {
                    archiveArtifacts 'target/*.jar'
               }
         }
+       stage('mail'){
+             steps{
+                  mail bcc: '', body: 'Build success', cc: '', from: '', replyTo: '', subject: 'Build', to: 'rajasekhar.av@verinon.co.in'
+                  }
+       }
     }
 }
