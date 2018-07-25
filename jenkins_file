@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    stages {
+        stage('git clone') {
+            
+            steps {
+            git 'https://github.com/ThomasJaspers/java-junit-sample.git'
+                  }
+               }
+        stage('maven build') {
+            steps {
+                sh '''mvn clean install'''
+                  }
+               }
+        stage('copy'){
+            steps{
+                sh 'cp target/*.jar /tmp'
+                 }
+                     }
+        stage('Results') {
+             steps{
+                  junit 'target/surefire-reports/*.xml'
+                   archiveArtifacts 'target/*.jar'
+              }
+        }
+        stage('mail') {
+            steps{
+         mail bcc: '', body: 'Build success', cc: '', from: '', replyTo: '', subject: 'Build', to: 'rajasekhar.av@verinon.co.in'
+
+            }
+        }
+    }
+}
