@@ -27,6 +27,36 @@ pipeline {
              steps{
                   mail bcc: '', body: 'Build success', cc: '', from: '', replyTo: '', subject: 'Build', to: 'rajasekhar.av@verinon.co.in'
                   }
-       }
+        }
+      stage('upload') {
+
+           steps {
+
+              script { 
+
+                 def server = Artifactory.server 'Artifactory'
+
+                 def uploadSpec = """{
+
+                    "files": [{
+
+                       "pattern": "/var/lib/jenkins/workspace/Pipelineproject/target/*.jar",
+
+                       "target": "Jfrog/"
+
+                    }]
+
+                 }"""
+
+
+
+                 server.upload(uploadSpec) 
+
+               }
+
+            }
+
+        }
+
     }
 }
