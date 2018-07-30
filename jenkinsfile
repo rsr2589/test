@@ -47,16 +47,19 @@ pipeline {
                     }]
 
                  }"""
-
-
-
-                 server.upload(uploadSpec) 
-
+                server.upload(uploadSpec) 
                }
-
             }
-
         }
+         stage(sonar) {
 
+            steps('SonarQube analysis') {
+
+                withSonarQubeEnv('Sonar') {
+
+                    sh 'mvn clean package sonar:sonar'   
+                }
+            }
+        }
     }
 }
